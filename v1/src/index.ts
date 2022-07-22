@@ -2,13 +2,13 @@ import  express, { Request, Response } from 'express';
 import { conn } from './db/conn';
 import UsersDAO from './db/users';
 import { Db } from 'mongodb';
-import { Iuser } from './types';
+import { IUser } from './types';
 
 const app = express();
 app.use(express.json());
 
 app.post('/users', async (request: Request, response: Response) => {
-  const user: Iuser = request.body;
+  const user: IUser = request.body;
 
   try {
     if(!user) throw new Error('Dados incorretos do usuário');
