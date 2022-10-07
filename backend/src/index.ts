@@ -1,29 +1,47 @@
-const { graphql, buildSchema } = require('graphql');
+import { ApolloServer, gql } from 'apollo-server';
 import { conn } from './db/conn';
 import UsersDAO from './db/users';
 import { Db } from 'mongodb';
 import { User } from './types';
 
-// Construct a schema, using GraphQL schema language
-const schema = buildSchema(`
-  type Query {
-    hello: String
-  }
-`);
-
-// The rootValue provides a resolver function for each API endpoint
-const rootValue = {
-  hello: () => {
-    return 'Hello world!';
+const books = [
+  {
+    title: 'The Awakening',
+    author: 'Kate Chopin',
   },
+  {
+    title: 'City of Glass',
+    author: 'Paul Auster',
+  },
+];
+
+const typeDefs = gql`
+  type Book {
+    title: String
+    author: String
+  }
+
+  type Query {
+    books: [Book]
+  }
+`;
+
+const resolvers = {
+  Query: {
+    books: () => books,
+  },
+  Book: {
+    title: () => books[0].title, 
+    author: () => books[0].author
+  }
 };
 
-// Run the GraphQL query '{ hello }' and print out the response
-graphql({
-  schema,
-  source: '{ hello }',
-  rootValue
-})
-.then((response: any) => {
-  console.log(response);
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  csrfPrevention: true,
 });
+
+server.listen().then((({port}) => {
+  console.log(`Rodando na porta: ${port}`);
+}));
