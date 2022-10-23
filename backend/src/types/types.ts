@@ -3,3 +3,8 @@ export interface User {
     birth_date: number;
     email: string;
 }
+export interface Item {
+    id?: Number;
+    description: string;
+    list: string;
+}

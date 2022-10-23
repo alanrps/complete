@@ -1,8 +1,10 @@
 import { MongoClient, MongoServerError, ServerApiVersion, Db } from 'mongodb';
+import 'dotenv/config';
 
-// Connection URL
-const uri: string = 'mongodb+srv://typescript:el9kjB9QodslHhtF@newcluster.wpvjw.mongodb.net/?retryWrites=true&w=majority';
-const dbName: string = 'typescript';
+const dbName: string = process.env.DB_NAME!;
+const uri: string = process.env.URI_MONGO!;
+
+console.log(dbName, uri);
 
 export async function conn() {
   try {

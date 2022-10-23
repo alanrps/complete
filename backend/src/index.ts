@@ -1,43 +1,34 @@
+import path from 'path';
+import { resolvers } from './resolvers';
 import { ApolloServer, gql } from 'apollo-server';
 import { conn } from './db/conn';
-import UsersDAO from './db/users';
+import UsersDAO from './dao/users';
 import { Db } from 'mongodb';
-import { User } from './types';
+import { config } from "dotenv"
+// import { User } from './types';
 
-const books = [
-  {
-    title: 'The Awakening',
-    author: 'Kate Chopin',
-  },
-  {
-    title: 'City of Glass',
-    author: 'Paul Auster',
-  },
-];
+config({ path: path.resolve(__dirname + '../.env') });
 
 const typeDefs = gql`
-  type Book {
-    title: String
-    author: String
-  }
 
-  type Query {
-    books: [Book]
-  }
+type Item {
+  id: ID!
+  description: String!
+  list: String!
+}
+
+type Query {
+  items: [Item!]!
+  item(id: ID!): Item
+}
+
+type Mutation {
+  createItem(description: String!, list: String!): Item
+}
 `;
 
-const resolvers = {
-  Query: {
-    books: () => books,
-  },
-  Book: {
-    title: () => books[0].title, 
-    author: () => books[0].author
-  }
-};
-
 const server = new ApolloServer({
-  typeDefs,
+  typeDefs, // path.resolve(__dirname, './schemas/schema.graphql')
   resolvers,
   csrfPrevention: true,
 });
