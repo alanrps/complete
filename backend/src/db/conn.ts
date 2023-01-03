@@ -12,7 +12,8 @@ export async function conn() {
 
     const conn: MongoClient = await client.connect();
     console.log('Connected successfully to server');
-    const dbConn: Db = client.db(dbName);
+
+    const dbConn: Db = conn.db(dbName);
 
     return dbConn;
   } catch (error) {

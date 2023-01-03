@@ -6,5 +6,5 @@ export interface User {
 export interface Item {
     id?: Number;
     description: string;
-    list: string;
+    category: string;
 }

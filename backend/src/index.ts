@@ -1,38 +1,31 @@
 import path from 'path';
-import { resolvers } from './resolvers';
-import { ApolloServer, gql } from 'apollo-server';
-import { conn } from './db/conn';
-import UsersDAO from './dao/users';
+import { conn } from '../src/db/conn';
+import UsersDAO from '../src/dao/users';
+import ItemsDAO from '../src/dao/items';
 import { Db } from 'mongodb';
 import { config } from "dotenv";
-// import { User } from './types';
+import { User } from './types/types';
+import express from 'express';
+import { itemsDAO } from '../src/container';
 
-config({ path: path.resolve(__dirname + '../.env') });
+const app = express();
+app.use(express.json())
 
-const typeDefs = gql`
-
-type Item {
-  id: ID!
-  description: String!
-  list: String!
-}
-
-type Query {
-  items: [Item!]!
-  item(id: ID!): Item
-}
-
-type Mutation {
-  createItem(description: String!, list: String!): Item
-}
-`;
-
-const server = new ApolloServer({
-  typeDefs, // path.resolve(__dirname, './schemas/schema.graphql')
-  resolvers,
-  csrfPrevention: true,
+app.get('/', function (req, res) {
+  res.status(200).send('Hello World');
 });
 
-server.listen().then((({ port }) => {
-  console.log(`Rodando na porta: ${port}`);
-}));
+app.post('/item', async (req, res) => {
+  const item = req.body;
+  console.log(item);
+
+  if(!item?.description || !item?.category)
+    res.send(400).send({ message: 'Missing parameters'});
+
+  const idItem = await itemsDAO.insertItem(item);
+  
+  res.status(201).send(idItem);
+});
+
+app.listen(3000);
+
