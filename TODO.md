@@ -1,6 +1,14 @@
-[ ] - Testes automatizados
+[ ] - Criar Testes automatizados
 [ ] - Conections pool
-[ ] - Dto
+[ ] - Tratamento de erros
 [ ] - Pesquisar sobre repositories
-[ ] - Add logs
-[ ] - Corrigir conexão com o banco de dados
+[X] - Add logs
+[ ] - Redis
+[X] - Corrigir conexão com o banco de dados
+[X] - DTO
+[X] - Configurar Jest
+[X] - Configurar log4js
+[ ] - Adicionar configuração de gravação em arquivo log4js 
+[ ] - Adicionar índices BD (Verificar se existe no NoSQL)
+[ ] - Testes de unidade
+[ ] - Testes de integração

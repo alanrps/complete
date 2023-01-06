@@ -7,15 +7,23 @@ import { config } from "dotenv";
 import { User } from './types/types';
 import express from 'express';
 import { itemsDAO } from '../src/container';
+import { log4js } from '../src/config/logs'; 
+
+// Categoria do log
+const logger = log4js.getLogger();
 
 const app = express();
 app.use(express.json())
 
 app.get('/', function (req, res) {
+  logger.debug("HELLO WORLD");
+
   res.status(200).send('Hello World');
 });
 
 app.post('/item', async (req, res) => {
+  logger.debug("INSERT ITEM");
+
   const item = req.body;
   console.log(item);
 
